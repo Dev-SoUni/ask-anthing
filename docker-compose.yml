@@ -3,14 +3,13 @@ version: "3.9"
 services:
   postgres:
     container_name: postgres
-    profiles: [services]
     image: timescale/timescaledb:latest-pg14
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: next_auth
-      POSTGRES_PASSWORD: next_auth
-      POSTGRES_DB: next_auth_local
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: ask_anything
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
