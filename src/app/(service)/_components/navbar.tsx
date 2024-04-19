@@ -15,7 +15,7 @@ const menus = [
 
 export function Navbar() {
   return (
-    <nav className="absolute top-[50px] inset-x-0">
+    <nav className="h-full flex items-center">
       <div className="container flex justify-between items-center">
         <div className="relative w-[145px] h-[30px] md:w-[155px] md:h-[40px]">
           <Image

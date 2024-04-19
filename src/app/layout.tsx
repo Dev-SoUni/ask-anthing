@@ -1,10 +1,15 @@
 import React from "react"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import localFont from "next/font/local"
 
+import { cn } from "@/lib/utils"
 import "@/styles/globals.css"
 
-const inter = Inter({ subsets: ["latin"] })
+const Pretendard = localFont({
+  src: "../styles/fonts/Pretendard/variable/woff2/PretendardVariable.woff2",
+  display: "swap",
+  variable: "--font-pretendard",
+})
 
 export const metadata: Metadata = {
   title: {
@@ -22,8 +27,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html
+      lang="ko"
+      className={cn(Pretendard.variable)}
+    >
+      <body className="font-pretendard">
         {children}
       </body>
     </html>

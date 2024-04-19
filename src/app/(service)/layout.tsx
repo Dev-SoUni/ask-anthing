@@ -9,9 +9,11 @@ export default function ServiceLayout({
 }) {
   return (
     <div className="relative h-full">
-      <Navbar />
+      <div className="h-[100px] lg:h-[150px]">
+        <Navbar />
+      </div>
 
-      <main>
+      <main className="pt-8">
         {children}
       </main>
     </div>
