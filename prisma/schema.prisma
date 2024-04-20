@@ -15,8 +15,9 @@ model User {
   password      String?
   image         String?
   accounts      Account[]
+  plans         Plan[]
 
-  @@map("users")
+  @@map("user")
 }
 
 model Account {
@@ -36,5 +37,63 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
-  @@map("accounts")
+  @@map("account")
+}
+
+// 여행 계획
+model Plan {
+  id         String     @id @default(cuid())
+  userId     String     @map("user_id")
+  start_date DateTime
+  end_date   DateTime
+  items      PlanItem[]
+  updatedAt  DateTime   @updatedAt @map("updated_at")
+  createdAt  DateTime   @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("plan")
+}
+
+// 여행 계획 아이템
+model PlanItem {
+  id          String          @id @default(cuid())
+  planId      String          @map("plan_id")
+  tagId       String?         @map("tag_id")
+  memo        String?         @db.Text
+  price       Int?            @default(0)
+  date        DateTime
+  arrivalTime DateTime?       @map("arrival_time")
+  sequence    Int
+  images      PlanItemImage[]
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+  createdAt   DateTime        @default(now()) @map("created_at")
+
+  plan Plan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  tag  Tag? @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@map("plan_item")
+}
+
+// 여행 계획 아이템 이미지
+model PlanItemImage {
+  id         String   @id @default(cuid())
+  planItemId String   @map("plan_item_id")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  planItem PlanItem @relation(fields: [planItemId], references: [id], onDelete: Cascade)
+
+  @@map("plan_item_image")
+}
+
+// 여행 계획 아이템 태그
+model Tag {
+  id        String     @id @default(cuid())
+  name      String
+  planItems PlanItem[]
+  updatedAt DateTime   @updatedAt @map("updated_at")
+  createdAt DateTime   @default(now()) @map("created_at")
+
+  @@map("tag")
 }
