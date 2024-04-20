@@ -1,7 +1,11 @@
 import React from "react"
 import type { Metadata } from "next"
 import localFont from "next/font/local"
+import { SessionProvider } from "next-auth/react"
 
+import { auth } from "@/auth"
+import { ConfettiProvider } from "@/components/providers/confetti-provider"
+import { Toaster } from "@/components/ui/sonner"
 import { cn } from "@/lib/utils"
 import "@/styles/globals.css"
 
@@ -21,19 +25,25 @@ export const metadata: Metadata = {
 }
 
 // TODO: 폰트를 Pretendard로 변경하기
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const session = await auth()
+
   return (
-    <html
-      lang="ko"
-      className={cn(Pretendard.variable)}
-    >
-      <body className="font-pretendard">
-        {children}
-      </body>
-    </html>
+    <SessionProvider session={session}>
+      <html
+        lang="ko"
+        className={cn(Pretendard.variable)}
+      >
+        <body className="font-pretendard">
+          {children}
+          <ConfettiProvider />
+          <Toaster position="top-center" />
+        </body>
+      </html>
+    </SessionProvider>
   )
 }

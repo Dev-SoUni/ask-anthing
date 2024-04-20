@@ -1,9 +1,13 @@
+"use client"
+
 import React from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { useSession } from "next-auth/react"
 import { Menu } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { UserButton } from "@/components/auth/user-button"
 
 const menus = [
   { label: "Courses", href: "#" },
@@ -14,6 +18,8 @@ const menus = [
 ]
 
 export function Navbar() {
+  const session = useSession()
+
   return (
     <nav className="h-full flex items-center">
       <div className="container flex justify-between items-center">
@@ -44,6 +50,16 @@ export function Navbar() {
         </div>
 
         <div>
+          {session.status === "authenticated" && (
+            <UserButton />
+          )}
+          {session.status === "unauthenticated" && (
+            <Button variant="outline" asChild>
+              <Link href="/auth/login">
+                로그인
+              </Link>
+            </Button>
+          )}
           <Button
             variant="ghost"
             size="icon"
