@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useState, useTransition} from "react"
+import React, { useState, useTransition } from "react"
 import Link from "next/link"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
@@ -22,6 +22,7 @@ import { LoginSchema } from "@/schemas/auth"
 
 export function LoginForm() {
   const [isPending, startTransition] = useTransition()
+  const [success, setSuccess] = useState<string | undefined>(undefined)
   const [error, setError] = useState<string | undefined>(undefined)
 
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -33,9 +34,13 @@ export function LoginForm() {
   })
 
   const handleSubmit = form.handleSubmit((values) => {
+    setSuccess(undefined)
+    setError(undefined)
+
     startTransition(async () => {
       try {
         const response = await login(values)
+        setSuccess(response?.success)
         setError(response?.error)
       }
       catch {
@@ -86,6 +91,7 @@ export function LoginForm() {
             )}
           />
 
+          <TwAlert variant="info" message={success} />
           <TwAlert variant="warning" message={error} />
 
           <div>

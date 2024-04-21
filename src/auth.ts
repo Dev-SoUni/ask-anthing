@@ -12,19 +12,31 @@ export const {
   signOut,
   auth,
 } = NextAuth({
+  pages: {
+    signIn: "/auth/login",
+  },
   callbacks: {
+    async signIn({ user, account }) {
+      if (account?.provider !== "credentials") return true
+
+      const existingUser = await getUserById(user.id as string)
+
+      if (!existingUser?.emailVerified) return false
+
+      return true
+    },
     async session({ token, session }) {
       if (token.sub && session.user) {
-        session.user.id = token.sub;
+        session.user.id = token.sub
       }
 
       if (session.user) {
-        session.user.email = token.email as string;
-        session.user.name = token.name as string;
-        session.user.isOAuth = token.isOAuth as boolean;
+        session.user.email = token.email as string
+        session.user.name = token.name as string
+        session.user.isOAuth = token.isOAuth as boolean
       }
 
-      return session;
+      return session
     },
     async jwt({ token }) {
       if (!token.sub) return token
@@ -34,9 +46,9 @@ export const {
 
       const existingAccount = await getAccountByUserId(existingUser.id)
 
-      token.email = existingUser.email;
-      token.name = existingUser.name;
-      token.isOAuth = !!existingAccount;
+      token.email = existingUser.email
+      token.name = existingUser.name
+      token.isOAuth = !!existingAccount
 
       return token
     },

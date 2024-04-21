@@ -40,6 +40,17 @@ model Account {
   @@map("account")
 }
 
+// 이메일 인증 토큰
+model EmailVerificationToken {
+  id      String   @id @default(cuid())
+  email   String   @unique
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+  @@map("email_verification_token")
+}
+
 // 여행 계획
 model Plan {
   id         String     @id @default(cuid())

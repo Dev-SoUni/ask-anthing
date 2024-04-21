@@ -23,7 +23,7 @@ export function Navbar() {
   return (
     <nav className="h-full flex items-center">
       <div className="container flex justify-between items-center">
-        <div className="relative w-[145px] h-[30px] md:w-[155px] md:h-[40px]">
+        <div className="relative w-[120px] h-[30px] md:w-[155px] md:h-[40px]">
           <Image
             src="/logo.svg"
             alt="로고"
@@ -49,7 +49,7 @@ export function Navbar() {
           </ul>
         </div>
 
-        <div>
+        <div className="flex items-center gap-x-2">
           {session.status === "authenticated" && (
             <UserButton />
           )}
