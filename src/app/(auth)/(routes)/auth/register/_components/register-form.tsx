@@ -48,7 +48,7 @@ export function RegisterForm() {
       await axios.post("/api/users", values)
 
       confetti.start()
-      toast.success("환영합니다. 회원가입이 완료되었습니다.")
+      toast.success("이메일 인증을 위한 메일이 발송되었습니다.\n이메일은 확인해주세요.")
       router.push("/auth/login")
     }
     catch (error) {

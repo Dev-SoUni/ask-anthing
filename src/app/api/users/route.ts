@@ -3,6 +3,8 @@ import { NextResponse } from "next/server"
 import { StatusCodes } from "http-status-codes"
 
 import { db } from "@/lib/db"
+import { generateEmailVerificationToken } from "@/lib/token"
+import { sendEmailVerificationTokenEmail } from "@/lib/mail"
 import { getUserByEmail } from "@/data/user"
 import { RegisterSchema } from "@/schemas/auth"
 
@@ -34,6 +36,13 @@ export async function POST(
         name,
         password: hashedPassword,
       },
+    })
+
+    const emailVerificationToken = await generateEmailVerificationToken(email)
+
+    await sendEmailVerificationTokenEmail({
+      to: emailVerificationToken.email,
+      token: emailVerificationToken.token,
     })
 
     //

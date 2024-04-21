@@ -25,3 +25,8 @@ export const RegisterSchema = z.object({
       message: "비밀번호가 서로 일치하지 않습니다.",
     },
   )
+
+export const EmailVerificationConfirmSchema = z.object({
+  token: z.string()
+    .min(1, { message: "토큰은 필수 사항입니다." })
+})
