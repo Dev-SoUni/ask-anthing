@@ -1,5 +1,7 @@
 import React from "react"
 
+import { SettingsDialog } from "@/components/auth/settings-dialog"
+
 import { Navbar } from "./_components/navbar"
 
 export default function ServiceLayout({
@@ -16,6 +18,8 @@ export default function ServiceLayout({
       <main className="pt-8">
         {children}
       </main>
+
+      <SettingsDialog />
     </div>
   )
 }
