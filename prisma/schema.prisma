@@ -51,17 +51,45 @@ model EmailVerificationToken {
   @@map("email_verification_token")
 }
 
+// 여행 장소 카테고리
+model TravelCategory {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  locations TravelLocation[]
+
+  @@map("travel_category")
+}
+
+// 여행 장소
+model TravelLocation {
+  id         String   @id @default(cuid())
+  categoryId String   @map("category_id")
+  name       String   @unique
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  category TravelCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  plans    Plan[]
+
+  @@map("travel_location")
+}
+
 // 여행 계획
 model Plan {
   id         String     @id @default(cuid())
   userId     String     @map("user_id")
+  locationId String     @map("location_id")
   start_date DateTime
   end_date   DateTime
   items      PlanItem[]
   updatedAt  DateTime   @updatedAt @map("updated_at")
   createdAt  DateTime   @default(now()) @map("created_at")
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user     User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  location TravelLocation @relation(fields: [locationId], references: [id])
 
   @@map("plan")
 }
